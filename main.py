@@ -1,6 +1,3 @@
-import sys
-sys.path.append('src')
-
 from src.content_manager import ContentManager
 from src.content import Content
 
