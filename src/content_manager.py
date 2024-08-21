@@ -1,5 +1,7 @@
 import os
+from scipy.spatial.distance import cosine
 from src.content import Content
+from src.embedding import embed_query, load_embedded_contents
 import xml.etree.ElementTree as ET
 
 class ContentManager:
@@ -25,10 +27,22 @@ class ContentManager:
         self.contents.append(content)
         self.save()
 
-    def search(self, query):
-        # Simple text-based search for now
-        results = [content for content in self.contents if query in content.description]
-        return results
+    def search(self, query, llm=False, top_n=3):
+        #returns top 3 similar contents
+        if llm!=False:
+            emb_query = embed_query(query, llm)
+            emb_contents = load_embedded_contents(llm)
+            similarities = {}
+            for content_desc, content_embedding in emb_contents.items():
+                similarity = 1 - cosine(emb_query, content_embedding)
+                similarities[content_desc] = similarity
+            top_similar = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
+
+        else:
+            # Text-based search
+            top_similar = [content for content in self.contents if query in content.description]
+            
+        return top_similar[:top_n]
 
     def get_user_contents(self, user_id):
         return [content for content in self.contents if content.author_id == user_id]
