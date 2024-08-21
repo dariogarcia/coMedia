@@ -1,2 +1,2 @@
 # coMedia
-storing, indexing and retrieving all sorts of media
+Storing, indexing and retrieving all sorts of media, using LLM embeddings as backbone.
