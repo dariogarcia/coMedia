@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 
 class Content:
-    def __init__(self, author_id, co_type, description, language, author, date, place, score, link):
+    def __init__(self, author_id, co_type, description, language, author, date, place, score, link, co_id, media_id):
         self.author_id = author_id
         self.co_type = co_type
         self.description = description
@@ -11,7 +11,9 @@ class Content:
         self.place = place
         self.score = score
         self.link = link
-
+        self.co_id = co_id
+        self.media_id = media_id
+    
     def to_xml(self):
         content_elem = ET.Element("content")
         for key, value in self.__dict__.items():
@@ -30,4 +32,6 @@ class Content:
             xml_elem.find("place").text,
             int(xml_elem.find("score").text),
             xml_elem.find("link").text,
+            xml_elem.find("co_id").text,
+            xml_elem.find("media_id").text,
         )

@@ -1,4 +1,4 @@
-from src.content_manager import ContentManager
+from src.content_manager import ContentManager, get_next_co_id
 from src.content import Content
 
 def main():
@@ -19,15 +19,18 @@ def main():
             score = int(input("Enter your score for content quality (1-5): "))
             link = input("Enter an external link to the original content: ")
             date_str = input("If known and applicable, enter a creation date for the original content:")
-            content = Content(author_id, co_type, description, language, author, date_str, place, score, link)
+            co_id = get_next_co_id(content_manager)
+            media_id = "TODO"
+            content = Content(author_id, co_type, description, language, author, date_str, place, score, link, co_id, media_id)
             content_manager.add_content(content)
             print("Content added successfully.")
         #Search for content
         elif action == "search":
             query = input("Enter search query: ")
             results = content_manager.search(query)
-            print("Most similar contents:")
-            print(results)
+            print("\n Most similar contents:")
+            for content_desc, similarity in results:
+                print(f"Description: {content_desc} (Similarity: {similarity:.4f})")
         #See previously added contents/comments
         elif action == "review":
             user_contents = content_manager.get_user_contents(user_id)

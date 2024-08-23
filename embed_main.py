@@ -1,32 +1,26 @@
-import argparse
 import os
+import pickle
 import xml.etree.ElementTree as ET
 from src.content import Content
-from src.embedding import embed_contents
+from src.embedding import embed_contents, store_embedded_contents
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("xml_file", help="Path to the XML file")
-    parser.add_argument("embedding_model", help="Hugging Face model name")
-    args = parser.parse_args()
-    # Load XML data
-    tree = ET.parse(args.xml_file)
+    #This code reads the xml file and produces an embedding of it, storing it in disk
+    embedding_model = 'BAAI/bge-m3'
+    # Load data and embed each content sample
+    tree = ET.parse('data/contents.xml')
     root = tree.getroot()
-    # Create Content objects and embed descriptions
-    contents = [Content(content) for content in root.findall("content")]
-    embedded_contents = embed_contents(contents, args.embedding_model)
-    # Construct the output file path
+    contents = []
+    for content_element in root.findall("content"):
+        content_data = {}
+        for child in content_element:
+            content_data[child.tag] = child.text
+        contents.append(Content(**content_data))
+    embedded_contents = embed_contents(contents, embedding_model)
     data_dir = "data"
-    output_file_path = os.path.join(data_dir, f"{args.embedding_model}_embeddings.txt")
-    # Check file and overwriting
-    if os.path.exists(output_file_path):
-        overwrite = input(f"Output file {output_file_path} already exists. Overwrite? (y/n): ")
-        if overwrite.lower() != "y":
-            print("Aborting.")
-            return
-    with open(output_file_path, "w") as f:
-        for content, embedding in embedded_contents.items():
-            f.write(f"{content.description}\t{embedding}\n")
+    output_file_path = os.path.join(data_dir, "embeddings.pkl")
+    store_embedded_contents(output_file_path, embedded_contents)
+    return
 
 if __name__ == "__main__":
     main()

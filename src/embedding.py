@@ -1,45 +1,40 @@
 import os
-import torch
-from transformers import AutoTokenizer, AutoModel
+import pickle
+from FlagEmbedding import BGEM3FlagModel
 
-def embed_query(query, model_name):
-    #Given an XML contents structure and an embedding model
-    #Embed the contents description field using the model
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModel.from_pretrained(model_name)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device)
-    inputs = tokenizer(query, return_tensors="pt").to(device)
-    outputs = model(**inputs)
-    embedding = outputs.last_hidden_state.mean(dim=1).squeeze().tolist()
+def embed_query(query, model_name="BAAI/bge-m3"):
+    model = BGEM3FlagModel(model_name)
+    embedding = model.encode(query, batch_size=1, max_length=8192)['dense_vecs']
     return embedding
 
-def embed_contents(contents, model_name):
-    #Given an XML contents structure and an embedding model
-    #Embed the contents description field using the model
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModel.from_pretrained(model_name)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device)
+def embed_contents(contents, model_name="BAAI/bge-m3"):
+    model = BGEM3FlagModel(model_name)
     embedded_contents = {}
     for content in contents:
-        inputs = tokenizer(content.description, return_tensors="pt").to(device)
-        outputs = model(**inputs)
-        embedding = outputs.last_hidden_state.mean(dim=1).squeeze().tolist()
-        embedded_contents[content] = embedding
+        embedding = model.encode(content.description, batch_size=12, max_length=8192)['dense_vecs']
+        embedded_contents[content.description] = embedding
     return embedded_contents
 
 def load_embedded_contents(embedding_model):
-    #Given an embedding model, load a file with the contents embedded by it
-    #and return those in a dict
+    # Construct the output file path
     data_dir = "data"
-    output_file_path = os.path.join(data_dir, f"{embedding_model}_embeddings.txt")
-    if os.path.exists(output_file_path) == False:
+    output_file_path = os.path.join(data_dir, "embeddings.pkl")
+    if os.path.exists(output_file_path):
+        # Load the embedded contents from the pickle file
+        with open(output_file_path, "rb") as f:
+            embedded_contents = pickle.load(f)
+        return embedded_contents
+    else:
         print("Embedding file missing. Aborting.")
-        return
-    embedded_contents = {}
-    with open(output_file_path, "r") as f:
-        for line in f:
-            content_desc, embedding_str = line.strip().split("\t")
-            embedding = [float(x) for x in embedding_str.split(",")]
-            embedded_contents[content_desc] = embedding
+        return None
+
+def store_embedded_contents(output_file_path, embedded_contents):
+    if os.path.exists(output_file_path):
+        overwrite = input(f"Output file {output_file_path} already exists. Overwrite? (y/n): ")
+        if overwrite.lower() != "y":
+            print("Aborting.")
+            return
+    with open(output_file_path, "wb") as f:
+        pickle.dump(embedded_contents, f)
+    print("Embeddings saved to", output_file_path)
+    return
