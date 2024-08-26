@@ -36,12 +36,19 @@ class ItemManager:
         self.items.append(item)
         self.save()
 
-    def find_item(self, description, llm="BAAI/bge-m3", top_n=3):
+    def associate_content(self, description, llm="BAAI/bge-m3", top_n=3):
         #Finds the most likely content for a given commentary. If none, creates one based on it.
         #TODO: Add optional fields as inputs to improve matchmaking
-        top_similar_items = self.retrieve_by_similarity(description,)
-        #TODO implement creation case
-        return top_similar_items
+        top_similar_items = self.retrieve_by_similarity(description, match_comm_comm=False, match_cont_desc=True)
+        for item in top_similar_items:
+            response = input("Is this content the one?\n"+item[0]+"\n (Y/N)")
+            if response=='Y':
+                return item[1][0]
+        #if it reaches here, none was found. create new one
+        item_id = get_next_item_id(self)
+        self.items.append(Item(author_id="", item_type="content", description=description, commentary="", language="", author="", date="", place="", score=0, link="", item_id=item_id, media_id=""))
+        self.save()
+        return item_id
 
     def retrieve_by_similarity(self, query, match_cont_desc, match_comm_comm, llm="BAAI/bge-m3", top_n=3):
         #returns most similar items to given query. Matches either the content description or the comments comment.
@@ -50,18 +57,18 @@ class ItemManager:
         emb_query = embed_query(query)
         embedded_items = load_embedded_items()
         similarities = {}
-        for _, item_value in embedded_items.items():
+        for item_id, item_value in embedded_items.items():
             if match_cont_desc:
                 if item_value[0]=="commentary":
                     continue
                 similarity = 1 - cosine(emb_query, item_value[1][1])
-                similarities[item_value[1][0]] = similarity
+                similarities[item_value[1][0]] = (item_id,similarity)
             else:#match_comm_comm
                 if item_value[0]=="content":
                     continue
                 similarity = 1 - cosine(emb_query, item_value[2][1])
-                similarities[item_value[2][0]] = similarity
-        top_similar = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
+                similarities[item_value[2][0]] = (item_id,similarity)
+        top_similar = sorted(similarities.items(), key=lambda x: x[1][1], reverse=True)
         return top_similar[:top_n]
 
     def get_user_items(self, user_id):
