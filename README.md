@@ -4,6 +4,12 @@ This project persists and provides an index for media (text, sound, video, inter
 
 There are currently three main functionalities considered. Adding commentaries, searching for content, and listing commentaries.
 
+To run use 'python main.py'
+
+Enter a user Id. This should be a distinct name, under which all comments added by you will be listed. If you want to try a user Id which already contains some comments, use 'dario'.
+
+Next, enter which action you wish to perform. One of 'add', 'search and 'review'.
+
 ## Adding content
 
 Whenever a user wants to add a commentary on a piece of content, it must provide with the following:
@@ -24,3 +30,5 @@ Simply, get all the comments added by the active user.
 ## Embedding actions
 
 As a working prototype, considering the many changes happening in the persisted data, an external procedure is provided, so that one can produce the LLM embeddings for all data. This is computed through the embed_main.py call, which processes the xml file and generates the embeddings and stores them in a pkl.
+
+In other words, you need to run 'python embed_main.py' after adding some comments to the system, so these are embedded by the LLM model and accessible through the search functionality.
