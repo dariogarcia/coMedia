@@ -2,7 +2,7 @@
 
 This project persists and provides an index for media (text, sound, video, interactive or otherwise), as reviewed by users. For retrieval and merging it uses LLM embeddings.
 
-There are currently three main functionalities considered. Adding commentaries, searching for content, and listing commentaries.
+There are currently three main functionalities considered. Adding commentaries, searching for content, and listing commentaries. This are accessible through a simple command line interface.
 
 To run use 'python main.py'
 
