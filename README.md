@@ -10,6 +10,8 @@ Enter a user Id. This should be a distinct name, under which all comments added 
 
 Next, enter which action you wish to perform. One of 'add', 'search and 'review'.
 
+![Screenshot from 2024-09-22 22-38-32](https://github.com/user-attachments/assets/1d90cb1c-5492-49d1-a355-c219b524af21)
+
 ## Adding content
 
 Whenever a user wants to add a commentary on a piece of content, it must provide with the following:
