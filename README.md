@@ -4,15 +4,24 @@ This platform is designed to store (1) digital content and (2) your comments abo
 coMedia has a user and a server side. User stores favourite content, and comments on it, which never leave the user side in textual form. Servers host a global list of contents, by matching and merging the ones created by users. User comments, anonimized, aggregated and embedded, are used to characterize content on the server side. 
 
 ## User Functionalities
-The main functionalities for the user side of the platform are:
+The main functionalities, detalied below, are the ones available from the user side of the platform:
 * Add new content to your personal list of favourite media
 * Add comments to your content, for indexing and later retrieval
 * Search for content within your favourites
 * Make queries to the server side for new content 
 
+### Add new user content
+
+
+### Add new user comment
+
+### Search for old user content
+
+### Search for new user content
+
 ## Server Functionalities
 
-The main functionalities for the user side of the platform are:
+The main services running on the server side of the platform are:
 * Keep an integrated and updated list of all content
 * Build an aggregated comment-based characterization of content
 * Answer search queries from users
