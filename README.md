@@ -12,18 +12,17 @@ The main functionalities, detalied below, are the ones available from the user s
 
 ### Add new user content
 
-For a user to add new elements to its own list of liked content, it must provide bibliographic details that allow to identify it, such as author, date, location, language or url, and store it. These details are sent to the server, which return a list of possible matches, for the user to accept or reject. Upon acceptance, the entry from the user list becomes linked and enriched. Together with the bibliographic details, the user can provide a description of the digital content, as objective as possible, in natural language and short (e.g., 3 to 10 sentences). Finally, the user can also provide a comment on the content, including what makes it more enjousable, in which context it is best consumed.
+For a user to add new elements to its own list of liked content, it must provide bibliographic details that allow to identify it, such as author, date, location, language or url, and store it. These details are sent to the server, which return a list of possible matches, for the user to accept or reject. Upon acceptance, the entry from the user list becomes linked and enriched. 
 
-The information described above is the one used to respond to queries from the user. Thus, a user who introduces information of high quality will be able to access its own data most successfully. Users will be prompt on that, together with the rule of never including personal or identifiable information in any field.
+Together with the bibliographic details, the user can provide a description of the digital content, as objective as possible, in natural language and short (e.g., 3 to 10 sentences). Finally, the user can also provide a comment on the content, including what makes it more enjoiable, in which context it is best consumed.
 
-After adding the commentary, the coMedia system will locate the most likely content entries already in the system, trying to match the new comment to existing content. This matching is done through a LLM embedding similarity of the available descriptions. Upon reviewing the most likely options, the users confirms one of the options, or rejects them all. If its confirmed, the commentary becomes associated with the existing content. If all are rejected, a new content is created using the bibliographic information and decription provided by the user.
+The information described above is the one used to respond to future queries from the user. Thus, a user who introduces information of high quality will be able to access its own data most successfully. Users will be prompt with details and tips on that, together with the rule of never including personal or identifiable information in any field.
 
+The new user content is matched with the server repository using all three fields. The description and the commentary are passed anonymized and encoded as textual embeddings for semantic simlarity. Bilbiographic details are directly matched.
 
-### Add new user comment
+### Search for old/new user content
 
-### Search for old user content
-
-### Search for new user content
+Users can query the plarform, looking for content entries. This can be done on the own listing of entries, to retrieve details of old content stored before, or it can be done on the server side which includes all content entries created by other users. Queries must follow the writing guidelines used for adding content. That is, include a brief description of what you are looking for, in which language, how you would like it to be, what you want it for, etc.
 
 ## Server Functionalities
 
@@ -32,7 +31,7 @@ The main services running on the server side of the platform are:
 * Build an aggregated comment-based characterization of content
 * Answer search queries from users
 
-# Current Prototype
+# Deprecated Prototype
 
 Some test functionalities are under testing. These are accessible through a simple command line interface. To start, run:
 
@@ -42,20 +41,12 @@ Enter a user Id. This should be a distinct name, to keep your contributions toge
 
 ![Screenshot from 2024-09-22 22-38-32](https://github.com/user-attachments/assets/1d90cb1c-5492-49d1-a355-c219b524af21)
 
-## Searching content
-The search engine considers both the descriptions and the comments provided by users. These are embedded by an LLM, and matched against the search query. The most similar contents are retrieved, and shown as results to the user.
-
-To build effective queries, follow the same guidelines expressed for adding content. That is, include a brief description of what you are looking for, in which language, how you would like it to be, what you want it for, etc.
-
-## Listing content
-Simply, get all the comments added by the active user.
-
 ## Embedding actions
 
 As a working prototype, considering the many changes happening in the persisted data, an external procedure is provided, so that one can produce the LLM embeddings for all data. This is computed through the embed_main.py call, which processes the xml file and generates the embeddings and stores them in a pkl.
 
 In other words, you need to run 'python embed_main.py' after adding some comments to the system, so these are embedded by the LLM model and accessible through the search functionality.
 
-# Disclaimer
+## Disclaimer
 This is the prototype of a prototype. Important pieces are missing, such as proper user management, interface and privacy (e.g., data anonymization). Dont ever submit personal information, misinformation, or any other sort of illegal content.
 
