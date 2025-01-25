@@ -10,11 +10,11 @@ The main functionalities, detalied below, are the ones available from the user s
 * Search for content within your favourites
 * Make queries to the server side for new content 
 
-### Add new user content
+### Add new user content and comments
 
 For a user to add new elements to its own list of liked content, it must provide bibliographic details that allow to identify it, such as author, date, location, language or url, and store it. These details are sent to the server, which return a list of possible matches, for the user to accept or reject. Upon acceptance, the entry from the user list becomes linked and enriched. 
 
-Together with the bibliographic details, the user can provide a description of the digital content, as objective as possible, in natural language and short (e.g., 3 to 10 sentences). Finally, the user can also provide a comment on the content, including what makes it more enjoiable, in which context it is best consumed.
+Together with the bibliographic details, the user can provide a description of the digital content, as objective as possible, in natural language and short (e.g., 3 to 10 sentences). Finally, the user can also provide a comment on the content, including what makes it more enjoiable, in which context it is best consumed, what it compares to, etc.
 
 The information described above is the one used to respond to future queries from the user. Thus, a user who introduces information of high quality will be able to access its own data most successfully. Users will be prompt with details and tips on that, together with the rule of never including personal or identifiable information in any field.
 
@@ -22,7 +22,7 @@ The new user content is matched with the server repository using all three field
 
 ### Search for old/new user content
 
-Users can query the plarform, looking for content entries. This can be done on the own listing of entries, to retrieve details of old content stored before, or it can be done on the server side which includes all content entries created by other users. Queries must follow the writing guidelines used for adding content. That is, include a brief description of what you are looking for, in which language, how you would like it to be, what you want it for, etc.
+Users can query the plarform, looking for content entries. This can be done on the own listing of entries, to retrieve details of old content stored before, or it can be done on the server side which includes all content entries created by other users. Queries must follow the writing guidelines used for adding content. That is, include a brief description of what you are looking for, in which language, how you would like it to be, what you want it for, etc. User decides which set of features to use (bibliographic, descriptions, comments).
 
 ## Server Functionalities
 
@@ -30,6 +30,14 @@ The main services running on the server side of the platform are:
 * Keep an integrated and updated list of all content
 * Build an aggregated comment-based characterization of content
 * Answer search queries from users
+
+### Content Repository
+
+In order to allow the collaborative construction of a knowledge base, the server integrates all content added by users. It maintains a database of unique contents, associated with multiple user entries (i.e., several users refering to the same content). This is mainly done through bilbiographic matching (author name, urls (wikipedia, imdb, spotify, youtube, podcast platforms, etc.) ) and remains pending until validated by user. Description and commentary of users anynimized and encoded, is stored associated with the content id, for retrieval purposes.
+
+### Retrieval of the knowledge base
+
+Users can make queries for content. Depending on user selection, this search is done using the different metadata types. 
 
 # Deprecated Prototype
 
