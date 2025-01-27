@@ -39,6 +39,22 @@ In order to allow the collaborative construction of a knowledge base, the server
 
 Users can make queries for content. Depending on user selection, this search is done using the different metadata types. 
 
+# Data Structures
+
+## Content
+This structure is the atomic unit of media. Users keep a list with their own version of data, and the server keeps an embedded version of the content.
+
+User Content: uid, modality, author, title, date, location, language, url, imdb_link, wiki_link, yt_link, spot_link, goodreads_link, ..., description.
+
+Server Content: uid, [<modality,freq>], [<title,freq>], ..., [<embedded_description,freq>].
+
+## Commentary
+Commentaries are the subjective view on content.
+
+User Commentary: content_uid, commentary
+
+Server Comentary: content_uid, [<embedded_commentary,freq>]
+
 # Deprecated Prototype
 
 Some test functionalities are under testing. These are accessible through a simple command line interface. To start, run:
